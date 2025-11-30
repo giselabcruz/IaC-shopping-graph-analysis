@@ -6,5 +6,5 @@ module "lambda_function" {
   tags = {
     Name = "lambda_function"
   }
-  filename = "lambda_function.jar"
+  filename = "lambda_function.zip"
 }
