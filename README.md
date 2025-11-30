@@ -10,26 +10,34 @@ The project follows a structured organization with modules and resource-specific
 
 ```
 .
-├── main.tf                 # Main Terraform configuration
-├── sandbox.tfvars          # Variables for sandbox environment
-├── modules/                # Reusable Terraform modules
+├── .gitignore
+├── README.md
+├── modules/
 │   ├── lambda/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── terraform.tf
 │   ├── s3/
 │   ├── neptune/
 │   ├── api-gateway/
 │   └── sqs/
-├── lambda/                 # Lambda-specific resources
-├── s3/                     # S3-specific resources
-├── neptune/                # Neptune-specific resources
-├── api-gateway/            # API Gateway-specific resources
-└── sqs/                    # SQS-specific resources
+└── lambda/
+    ├── main.tf
+    └── .terraform.lock.hcl
 ```
 
 **Structure explanation:**
-- **`main.tf`**: Main entry point that orchestrates all resources
-- **`sandbox.tfvars`**: Environment-specific variables for the sandbox environment
 - **`modules/`**: Contains reusable module definitions
-- **Resource folders** (lambda/, s3/, etc.): Contains the actual resource implementations that use the modules
+  - **`modules/lambda/`**: Lambda module with complete implementation
+    - `main.tf`: Defines the Lambda function resource and IAM execution role
+    - `variables.tf`: Input variables for the module (function_name, runtime, region, env, tags)
+    - `terraform.tf`: Terraform version and AWS provider requirements
+  - Other modules (s3, neptune, api-gateway, sqs) are placeholders for future implementation
+- **`lambda/`**: Contains the actual Lambda function implementation that uses the lambda module
+  - `main.tf`: Instantiates the lambda module with specific configuration
+  - `.terraform.lock.hcl`: Locks provider versions for reproducibility
+- **`.gitignore`**: Specifies files to ignore in version control
+- **`README.md`**: This documentation file
 
 > [!IMPORTANT]
 > The separation between `modules/` and resource folders is crucial. Modules contain **reusable templates**, while resource folders contain **specific implementations** that consume those modules.
