@@ -6,16 +6,30 @@ This project uses a modular Terraform architecture to manage AWS infrastructure 
 
 ### Directory Structure
 
-The project requires creating a `modules/` directory at the root, which will contain subdirectories organized by AWS resource type:
+The project follows a structured organization with modules and resource-specific folders:
 
 ```
-modules/
-├── lambda/
-├── s3/
-├── neptune/
-├── api-gateway/
-└── sqs/
+.
+├── main.tf                 # Main Terraform configuration
+├── sandbox.tfvars          # Variables for sandbox environment
+├── modules/                # Reusable Terraform modules
+│   ├── lambda/
+│   ├── s3/
+│   ├── neptune/
+│   ├── api-gateway/
+│   └── sqs/
+├── lambda/                 # Lambda-specific resources
+├── s3/                     # S3-specific resources
+├── neptune/                # Neptune-specific resources
+├── api-gateway/            # API Gateway-specific resources
+└── sqs/                    # SQS-specific resources
 ```
+
+**Structure explanation:**
+- **`main.tf`**: Main entry point that orchestrates all resources
+- **`sandbox.tfvars`**: Environment-specific variables for the sandbox environment
+- **`modules/`**: Contains reusable module definitions
+- **Resource folders** (lambda/, s3/, etc.): Contains the actual resource implementations that use the modules
 
 ### What are Terraform Modules?
 
@@ -53,6 +67,10 @@ Module for creating REST or HTTP APIs with AWS API Gateway, including resources,
 
 #### **SQS**
 Module for Amazon SQS message queues, with dead-letter queue configurations, retention policies, and encryption.
+
+### VPC (Virtual Private Cloud)
+
+All resources for this project will be deployed within a **VPC (Virtual Private Cloud)** to ensure network isolation and security. It's worth noting that **AWS automatically generates a default VPC** in each region, which can be used for initial deployments. However, for production environments, it's recommended to create a custom VPC with specific network configurations tailored to the project's security and connectivity requirements.
 
 ---
 
