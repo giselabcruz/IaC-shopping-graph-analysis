@@ -3,11 +3,6 @@ variable "function_name" {
   description = "Name of the lambda function"
 }
 
-variable "role" {
-  type        = string
-  description = "Role ARN for the lambda function"
-}
-
 variable "runtime" {
   type        = string
   description = "Runtime for the lambda function"
