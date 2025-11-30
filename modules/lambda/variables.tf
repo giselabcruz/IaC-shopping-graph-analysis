@@ -8,6 +8,15 @@ variable "role" {
   description = "Role ARN for the lambda function"
 }
 
+variable "runtime" {
+  type        = string
+  description = "Runtime for the lambda function"
+  validation {
+    condition     = contains(["python3.11", "python3.12", "java17", "java21", "java25"], var.runtime)
+    error_message = "Runtime must be one of: python3.11, python3.12, java17, java21, java25"
+  }
+}
+
 variable "region" {
   type        = string
   description = "Region for the lambda function"
