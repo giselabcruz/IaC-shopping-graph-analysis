@@ -26,6 +26,7 @@ resource "aws_lambda_function" "lambda_function" {
   region        = var.region
   runtime       = var.runtime
   filename      = var.filename
+  handler       = "main"
   environment {
     variables = var.env_variables
   }

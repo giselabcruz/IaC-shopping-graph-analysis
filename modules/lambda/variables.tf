@@ -40,3 +40,7 @@ variable "filename" {
   description = "Filename for the lambda function"
 }
 
+variable "handler" {
+  type        = string
+  description = "Handler for the lambda function"
+}
