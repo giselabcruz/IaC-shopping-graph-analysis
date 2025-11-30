@@ -8,3 +8,8 @@ variable "role" {
   description = "Role ARN for the lambda function"
 }
 
+variable "region" {
+  type        = string
+  description = "Region for the lambda function"
+}
+
