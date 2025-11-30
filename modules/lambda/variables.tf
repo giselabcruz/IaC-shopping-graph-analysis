@@ -34,3 +34,9 @@ variable "tags" {
   description = "Tags for the lambda function"
   default     = {}
 }
+
+variable "filename" {
+  type        = string
+  description = "Filename for the lambda function"
+}
+

@@ -25,6 +25,7 @@ resource "aws_lambda_function" "lambda_function" {
   role          = aws_iam_role.lambda_execution_role.arn
   region        = var.region
   runtime       = var.runtime
+  filename      = var.filename
   environment {
     variables = var.env_variables
   }
