@@ -1,12 +1,12 @@
 # IaC Shopping Graph Analysis
 
-## Estructura de Módulos de Terraform
+## Terraform Modules Structure
 
-Este proyecto utiliza una arquitectura modular de Terraform para gestionar la infraestructura de AWS de manera eficiente y reutilizable.
+This project uses a modular Terraform architecture to manage AWS infrastructure efficiently and reusably.
 
-### 📁 Estructura de Directorios
+### 📁 Directory Structure
 
-El proyecto requiere la creación de un directorio `modules/` en la raíz, que contendrá subdirectorios organizados por tipo de recurso de AWS:
+The project requires creating a `modules/` directory at the root, which will contain subdirectories organized by AWS resource type:
 
 ```
 modules/
@@ -17,65 +17,65 @@ modules/
 └── sqs/
 ```
 
-### 🎯 ¿Qué son los Módulos de Terraform?
+### 🎯 What are Terraform Modules?
 
-Los módulos de Terraform son contenedores para múltiples recursos que se utilizan juntos. Sirven para **abstraernos de cómo implementar una serie de recursos** en Terraform y permiten **encapsular la lógica de creación** de distintos recursos de AWS.
+Terraform modules are containers for multiple resources that are used together. They serve to **abstract how we implement a series of resources** in Terraform and allow us to **encapsulate the creation logic** of different AWS resources.
 
-### ✨ Ventajas de Usar Módulos
+### ✨ Advantages of Using Modules
 
-#### 1. **Reutilización de Código**
-Al tener un módulo, podemos crear **varias instancias de un recurso de la misma manera** sin duplicar código. Esto es especialmente útil cuando necesitamos el mismo tipo de recurso para diferentes casuísticas.
+#### 1. **Code Reusability**
+By having a module, we can create **multiple instances of a resource in the same way** without duplicating code. This is especially useful when we need the same type of resource for different use cases.
 
-**Ejemplo:** Si necesitamos 3 funciones Lambda con configuraciones similares, en lugar de escribir el código tres veces, simplemente llamamos al módulo tres veces con diferentes parámetros.
+**Example:** If we need 3 Lambda functions with similar configurations, instead of writing the code three times, we simply call the module three times with different parameters.
 
-#### 2. **Mantenibilidad**
-Los cambios en la configuración se realizan en un solo lugar (el módulo), y se propagan automáticamente a todas las instancias que lo utilizan.
+#### 2. **Maintainability**
+Configuration changes are made in a single place (the module), and automatically propagate to all instances that use it.
 
-#### 3. **Consistencia**
-Garantiza que todos los recursos del mismo tipo se creen siguiendo las mismas mejores prácticas y estándares de configuración.
+#### 3. **Consistency**
+Ensures that all resources of the same type are created following the same best practices and configuration standards.
 
-#### 4. **Abstracción**
-Oculta la complejidad de la implementación, permitiendo a los usuarios del módulo enfocarse en los parámetros específicos de su caso de uso.
+#### 4. **Abstraction**
+Hides implementation complexity, allowing module users to focus on the specific parameters of their use case.
 
-### 📦 Módulos Incluidos
+### 📦 Included Modules
 
 #### **Lambda**
-Módulo para la creación de funciones AWS Lambda, incluyendo configuración de runtime, variables de entorno, roles IAM y triggers.
+Module for creating AWS Lambda functions, including runtime configuration, environment variables, IAM roles, and triggers.
 
 #### **S3**
-Módulo para buckets de S3 con configuraciones de versionado, encriptación, políticas de acceso y ciclo de vida.
+Module for S3 buckets with versioning, encryption, access policies, and lifecycle configurations.
 
 #### **Neptune**
-Módulo para bases de datos de grafos Amazon Neptune, incluyendo clústeres, instancias y configuraciones de seguridad.
+Module for Amazon Neptune graph databases, including clusters, instances, and security configurations.
 
 #### **API Gateway**
-Módulo para la creación de APIs REST o HTTP con AWS API Gateway, incluyendo recursos, métodos, integraciones y despliegues.
+Module for creating REST or HTTP APIs with AWS API Gateway, including resources, methods, integrations, and deployments.
 
 #### **SQS**
-Módulo para colas de mensajes Amazon SQS, con configuraciones de dead-letter queues, políticas de retención y encriptación.
+Module for Amazon SQS message queues, with dead-letter queue configurations, retention policies, and encryption.
 
-### 🚀 Ejemplo de Uso
+### 🚀 Usage Example
 
-Sin módulos (código duplicado):
+Without modules (duplicated code):
 ```hcl
-# Primera Lambda
+# First Lambda
 resource "aws_lambda_function" "lambda1" {
   function_name = "function-1"
   runtime       = "python3.9"
   handler       = "index.handler"
-  # ... muchas más líneas de configuración
+  # ... many more configuration lines
 }
 
-# Segunda Lambda (código duplicado)
+# Second Lambda (duplicated code)
 resource "aws_lambda_function" "lambda2" {
   function_name = "function-2"
   runtime       = "python3.9"
   handler       = "index.handler"
-  # ... las mismas líneas de configuración
+  # ... the same configuration lines
 }
 ```
 
-Con módulos (código reutilizable):
+With modules (reusable code):
 ```hcl
 module "lambda1" {
   source        = "./modules/lambda"
@@ -90,16 +90,16 @@ module "lambda2" {
 }
 ```
 
-### 📝 Próximos Pasos
+### 📝 Next Steps
 
-1. Crear el directorio `modules/` en la raíz del proyecto
-2. Implementar cada módulo con sus respectivos archivos:
-   - `main.tf` - Definición de recursos
-   - `variables.tf` - Variables de entrada
-   - `outputs.tf` - Valores de salida
-   - `README.md` - Documentación del módulo
-3. Utilizar los módulos en la configuración principal de Terraform
+1. Create the `modules/` directory at the project root
+2. Implement each module with its respective files:
+   - `main.tf` - Resource definitions
+   - `variables.tf` - Input variables
+   - `outputs.tf` - Output values
+   - `README.md` - Module documentation
+3. Use the modules in the main Terraform configuration
 
 ---
 
-**Nota:** Esta estructura modular facilita la escalabilidad del proyecto y permite a múltiples desarrolladores trabajar de manera más eficiente en diferentes componentes de la infraestructura.
+**Note:** This modular structure facilitates project scalability and allows multiple developers to work more efficiently on different infrastructure components.
