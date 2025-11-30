@@ -1,3 +1,9 @@
 module "lambda_function" {
-  source = "./modules/lambda"
+  source        = "./modules/lambda"
+  function_name = "lambda_function"
+  runtime       = "java21"
+  region        = "us-east-1"
+  tags = {
+    Name = "lambda_function"
+  }
 }
