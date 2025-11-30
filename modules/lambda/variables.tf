@@ -13,3 +13,8 @@ variable "region" {
   description = "Region for the lambda function"
 }
 
+variable "env" {
+  type        = map(string)
+  description = "Environment for the lambda function"
+  default     = {}
+}
