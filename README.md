@@ -35,7 +35,7 @@ The project follows a structured organization with modules and resource-specific
 
 Terraform modules are containers for multiple resources that are used together. They serve to **abstract how we implement a series of resources** in Terraform and allow us to **encapsulate the creation logic** of different AWS resources.
 
-### ✨ Advantages of Using Modules
+### Advantages of Using Modules
 
 #### 1. **Code Reusability**
 By having a module, we can create **multiple instances of a resource in the same way** without duplicating code. This is especially useful when we need the same type of resource for different use cases.
