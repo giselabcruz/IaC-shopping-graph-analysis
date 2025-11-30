@@ -15,14 +15,14 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-resource "aws_iam_role" "lambda_execution_role" {
-  name               = local.role_name
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
-}
-
 resource "aws_lambda_function" "lambda_function" {
   function_name = var.function_name
   role          = aws_iam_role.lambda_execution_role.arn
   region        = var.region
+  runtime       = var.runtime
+  environment {
+    variables = var.env_variables
+  }
+  tags = var.tags
 }
 

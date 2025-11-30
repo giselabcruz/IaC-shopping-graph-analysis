@@ -12,6 +12,12 @@ variable "runtime" {
   }
 }
 
+variable "env_variables" {
+  type        = map(string)
+  description = "Environment variables for the lambda function"
+  default     = {}
+}
+
 variable "region" {
   type        = string
   description = "Region for the lambda function"
