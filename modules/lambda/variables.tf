@@ -18,3 +18,9 @@ variable "env" {
   description = "Environment for the lambda function"
   default     = {}
 }
+
+variable "tags" {
+  type        = map(string)
+  description = "Tags for the lambda function"
+  default     = {}
+}
