@@ -31,16 +31,23 @@ The project follows a structured organization with modules and resource-specific
 - **`modules/`**: Contains reusable module definitions
 - **Resource folders** (lambda/, s3/, etc.): Contains the actual resource implementations that use the modules
 
+> [!IMPORTANT]
+> The separation between `modules/` and resource folders is crucial. Modules contain **reusable templates**, while resource folders contain **specific implementations** that consume those modules.
+
 ### What are Terraform Modules?
 
 Terraform modules are containers for multiple resources that are used together. They serve to **abstract how we implement a series of resources** in Terraform and allow us to **encapsulate the creation logic** of different AWS resources.
+
+> [!NOTE]
+> Think of modules as reusable blueprints. Just like a blueprint can be used to build multiple houses, a Terraform module can be used to create multiple instances of the same infrastructure pattern.
 
 ### Advantages of Using Modules
 
 #### 1. **Code Reusability**
 By having a module, we can create **multiple instances of a resource in the same way** without duplicating code. This is especially useful when we need the same type of resource for different use cases.
 
-**Example:** If we need 3 Lambda functions with similar configurations, instead of writing the code three times, we simply call the module three times with different parameters.
+> [!TIP]
+> **Example:** If we need 3 Lambda functions with similar configurations, instead of writing the code three times, we simply call the module three times with different parameters. This follows the DRY (Don't Repeat Yourself) principle.
 
 #### 2. **Maintainability**
 Configuration changes are made in a single place (the module), and automatically propagate to all instances that use it.
@@ -70,8 +77,15 @@ Module for Amazon SQS message queues, with dead-letter queue configurations, ret
 
 ### VPC (Virtual Private Cloud)
 
-All resources for this project will be deployed within a **VPC (Virtual Private Cloud)** to ensure network isolation and security. It's worth noting that **AWS automatically generates a default VPC** in each region, which can be used for initial deployments. However, for production environments, it's recommended to create a custom VPC with specific network configurations tailored to the project's security and connectivity requirements.
+All resources for this project will be deployed within a **VPC (Virtual Private Cloud)** to ensure network isolation and security.
+
+> [!NOTE]
+> AWS automatically generates a **default VPC** in each region, which can be used for initial deployments and testing.
+
+> [!WARNING]
+> For production environments, it's **strongly recommended** to create a custom VPC with specific network configurations tailored to the project's security and connectivity requirements. The default VPC may not meet your security standards.
 
 ---
 
-**Note:** This modular structure facilitates project scalability and allows multiple developers to work more efficiently on different infrastructure components.
+> [!TIP]
+> This modular structure facilitates project scalability and allows multiple developers to work more efficiently on different infrastructure components. Each team member can work on different resource folders without conflicts.
