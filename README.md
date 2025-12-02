@@ -93,7 +93,67 @@ All resources for this project will be deployed within a **VPC (Virtual Private 
 > [!WARNING]
 > For production environments, it's **strongly recommended** to create a custom VPC with specific network configurations tailored to the project's security and connectivity requirements. The default VPC may not meet your security standards.
 
----
+## 🐳 Docker Compose - Local Development with LocalStack
+
+This project includes a Docker Compose configuration that uses **LocalStack** to emulate AWS services locally, enabling development and testing without connecting to real AWS infrastructure.
+
+### Architecture
+
+![Architecture Diagram](/Users/giselabelmontecruz/.gemini/antigravity/brain/e6c7501a-0315-4eba-8cbd-5b866980be28/uploaded_image_1764708996435.png)
+
+### Available Services
+
+- **S3**: Object storage for data and results
+- **Lambda**: Serverless function execution
+- **IAM**: Role and permission management (simplified for local development)
+
+### Quick Start
+
+```bash
+# Start LocalStack services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f localstack
+
+# Stop services
+docker-compose down
+```
+
+### What Gets Created Automatically
+
+When you start the Docker Compose setup, the initialization script automatically creates:
+
+1. **S3 Buckets**:
+   - `mi-bucket-datos` - For input data
+   - `mi-bucket-resultados` - For processed results
+
+2. **Lambda Function**:
+   - `procesador-s3` - Example function that reads from S3, processes data, and writes results back
+
+### Example Usage
+
+```bash
+# Install awslocal (AWS CLI wrapper for LocalStack)
+pip install awscli-local
+
+# Upload a file to S3
+echo '{"producto": "laptop", "precio": 999}' > datos.json
+awslocal s3 cp datos.json s3://mi-bucket-datos/
+
+# Invoke Lambda function to process the file
+awslocal lambda invoke \
+  --function-name procesador-s3 \
+  --payload '{"bucket_origen": "mi-bucket-datos", "key": "datos.json"}' \
+  output.json
+
+# Download processed result
+awslocal s3 cp s3://mi-bucket-resultados/procesado/datos.json ./resultado.json
+```
+
+> [!TIP]
+> For detailed documentation on using the Docker Compose setup, including troubleshooting and advanced examples, see [DOCKER_SETUP.md](file:///Users/giselabelmontecruz/IaC-shopping-graph-analysis/DOCKER_SETUP.md).
+
 
 > [!TIP]
 > This modular structure facilitates project scalability and allows multiple developers to work more efficiently on different infrastructure components. Each team member can work on different resource folders without conflicts.
