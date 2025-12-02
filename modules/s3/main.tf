@@ -1,12 +1,16 @@
 resource "aws_s3_bucket" "s3_bucket" {
   bucket = var.bucket_name
-  versioning {
-    enabled = var.enable_versioning
-  }
-  tags = var.tags
+  tags   = var.tags
 }
 
-# S3 bucket notification to SQS
+resource "aws_s3_bucket_versioning" "versioning" {
+  bucket = aws_s3_bucket.s3_bucket.id
+
+  versioning_configuration {
+    status = var.enable_versioning ? "Enabled" : "Suspended"
+  }
+}
+
 resource "aws_s3_bucket_notification" "bucket_notification" {
   count  = var.enable_sqs_notification ? 1 : 0
   bucket = aws_s3_bucket.s3_bucket.id
