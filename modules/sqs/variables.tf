@@ -1,0 +1,34 @@
+variable "queue_name" {
+  description = "Name of the SQS queue"
+  type        = string
+}
+
+variable "delay_seconds" {
+  description = "Delay in seconds"
+  type        = number
+  default     = 90
+}
+
+variable "max_message_size" {
+  description = "Maximum message size in bytes"
+  type        = number
+  default     = 2048
+}
+
+variable "message_retention_seconds" {
+  description = "Message retention period in seconds"
+  type        = number
+  default     = 86400
+}
+
+variable "receive_wait_time_seconds" {
+  description = "Receive wait time in seconds"
+  type        = number
+  default     = 10
+}
+
+variable "tags" {
+  description = "Tags for the SQS queue"
+  type        = map(string)
+  default     = {}
+}
