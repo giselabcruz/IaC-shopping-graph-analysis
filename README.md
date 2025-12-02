@@ -99,7 +99,7 @@ This project includes a Docker Compose configuration that uses **LocalStack** to
 
 ### Architecture
 
-![Architecture Diagram](/Users/giselabelmontecruz/.gemini/antigravity/brain/e6c7501a-0315-4eba-8cbd-5b866980be28/uploaded_image_1764708996435.png)
+![Architecture Diagram](Web App Reference Architecture-2.png)
 
 ### Available Services
 
