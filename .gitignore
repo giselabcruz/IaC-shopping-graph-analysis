@@ -1,3 +1,15 @@
 .terraform.lock.hcl
 .terraform.tfstate
 .terraform
+
+# LocalStack data
+localstack-data/
+
+# Lambda artifacts
+lambda/function.zip
+lambda/__pycache__/
+lambda/*.pyc
+
+# Test files
+*.json
+!lambda/*.json
