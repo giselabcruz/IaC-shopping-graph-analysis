@@ -1,12 +1,18 @@
-provider "aws" {
-  region = "eu-west-1"
+terraform {
+  required_version = ">= 1.0"
 
-  skip_credentials_validation = true
-  skip_requesting_account_id  = true
-  skip_metadata_api_check     = true
-  s3_use_path_style           = true
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+    archive = {
+      source  = "hashicorp/archive"
+      version = "~> 2.0"
+    }
+  }
 }
 
 provider "aws" {
-  region = "eu-west-1"
+  region = var.aws_region
 }

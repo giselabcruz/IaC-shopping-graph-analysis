@@ -32,3 +32,15 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_s3_notification" {
+  description = "Enable S3 to send notifications to this queue"
+  type        = bool
+  default     = false
+}
+
+variable "s3_bucket_arn" {
+  description = "ARN of the S3 bucket allowed to send messages"
+  type        = string
+  default     = ""
+}
