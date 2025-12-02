@@ -99,7 +99,7 @@ This project includes a Docker Compose configuration that uses **LocalStack** to
 
 ### Architecture
 
-![Architecture Diagram](Web App Reference Architecture-2.png)
+![Architecture Diagram](Web%20App%20Reference%20Architecture-2.png)
 
 ### Available Services
 
