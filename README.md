@@ -123,6 +123,99 @@ docker-compose down
 > [!TIP]
 > For detailed documentation on using the Docker Compose setup, including troubleshooting and advanced examples, see [DOCKER_SETUP.md](file:///Users/giselabelmontecruz/IaC-shopping-graph-analysis/DOCKER_SETUP.md).
 
+## Integración S3-SQS-Lambda
+
+Este proyecto implementa una arquitectura orientada a eventos que conecta **S3**, **SQS** y **Lambda** para el procesamiento automático de datos.
+
+### Arquitectura de la Integración
+
+```
+┌─────────────┐
+│   S3 Bucket │  (Archivo subido)
+│   (Origen)  │
+└──────┬──────┘
+       │ Notificación de Evento
+       ▼
+┌─────────────┐
+│  Cola SQS   │  (Mensaje encolado)
+│   (Buffer)  │
+└──────┬──────┘
+       │ Event Source Mapping
+       ▼
+┌─────────────┐
+│   Lambda    │  (Procesa archivo)
+│ (Procesador)│
+└─────────────┘
+```
+
+### Componentes Implementados
+
+#### 1. **Bucket S3** (`data_ingestion_bucket`)
+- Recibe archivos para procesamiento
+- Envía notificaciones de eventos `s3:ObjectCreated:*` a SQS
+- Versionado habilitado para protección de datos
+
+#### 2. **Cola SQS** (`event_queue`)
+- Almacena temporalmente las notificaciones de S3
+- Política de cola que permite a S3 enviar mensajes
+- Retención de mensajes: 4 días
+- Long polling habilitado (10 segundos)
+
+#### 3. **Función Lambda** (`event_processor_lambda`)
+- Procesa archivos de S3 cuando es notificada vía SQS
+- Runtime: Python 3.11
+- Permisos:
+  - Lectura de objetos S3
+  - Consumo de mensajes SQS
+  - Escritura de logs en CloudWatch
+- Event Source Mapping con tamaño de lote: 10 mensajes
+
+### Flujo de Datos
+
+1. Un archivo se sube al bucket S3
+2. S3 envía una notificación de evento a la cola SQS
+3. SQS almacena el mensaje en la cola
+4. Lambda es invocada automáticamente por el Event Source Mapping
+5. Lambda lee el mensaje, obtiene el archivo de S3 y lo procesa
+6. Los resultados se registran en CloudWatch Logs
+
+### Despliegue
+
+Para desplegar la integración:
+
+```bash
+cd sqs
+terraform init
+terraform plan
+terraform apply
+```
+
+### Prueba de la Integración
+
+1. **Subir un archivo a S3**:
+```bash
+aws s3 cp test-file.json s3://shopping-graph-data-ingestion/
+```
+
+2. **Ver logs de Lambda**:
+```bash
+aws logs tail /aws/lambda/s3-event-processor --follow
+```
+
+### Configuración
+
+Las variables principales se encuentran en `sqs/variables.tf`:
+
+| Variable | Descripción | Valor por Defecto |
+|----------|-------------|-------------------|
+| `aws_region` | Región de AWS | `us-east-1` |
+| `s3_bucket_name` | Nombre del bucket S3 | `shopping-graph-data-ingestion` |
+| `sqs_queue_name` | Nombre de la cola SQS | `s3-event-notification-queue` |
+| `lambda_function_name` | Nombre de la función Lambda | `s3-event-processor` |
+
+> [!NOTE]
+> El nombre del bucket S3 debe ser globalmente único. Actualiza la variable `s3_bucket_name` si el valor por defecto ya está en uso.
+
 
 > [!TIP]
 > This modular structure facilitates project scalability and allows multiple developers to work more efficiently on different infrastructure components. Each team member can work on different resource folders without conflicts.
